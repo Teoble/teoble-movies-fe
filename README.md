@@ -1,35 +1,44 @@
-# teoble-movies-fe
+# Weiss Movies
 
-This template should help get you started developing with Vue 2 in Vite.
+#### Description
 
-## Recommended IDE Setup
+This is the FE Application that will allow user to search movies, see their details and build a wishlist consuming data from the [OMDb BFF](github.com/Teoble/teoble-movies-be)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur).
+### Configuration
 
-## Type Support for `.vue` Imports in TS
+Make sure that you have a version of [OMDb BFF](github.com/Teoble/teoble-movies-be) cloned in your machine. Open the repo and start dev running:
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates.
-
-However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can run `Volar: Switch TS Plugin on/off` from VSCode command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```bash
+$ npm run start
 ```
 
-### Compile and Hot-Reload for Development
+By default, the app will be running at port 4000
 
-```sh
-npm run dev
+### Installation
+
+```bash
+$ npm install
 ```
 
-### Type-Check, Compile and Minify for Production
+### Running the app
 
-```sh
-npm run build
+```bash
+# development
+$ npm run dev
+
+# build
+$ npm run build
 ```
+
+### Mapped Opportunities
+
+- Add unit tests for components
+- Add E2E coverage
+- Improve layout for resposive sizes
+- Change the search input developing a custom one, `md-autocomplete` is blocking to search any type of term
+
+Author - [Rafael Pereira](https://github.com/Teoble)
+
+### License
+
+Nest is [MIT licensed](LICENSE).
