@@ -2,11 +2,11 @@
 
 #### Description
 
-This is the FE Application that will allow user to search movies, see their details and build a wishlist consuming data from the [OMDb BFF](github.com/Teoble/teoble-movies-be)
+This is the FE Application that will allow user to search movies, see their details and build a wishlist consuming data from the [OMDb BFF](http://github.com/Teoble/teoble-movies-be)
 
 ### Configuration
 
-Make sure that you have a version of [OMDb BFF](github.com/Teoble/teoble-movies-be) cloned in your machine. Open the repo and start dev running:
+Make sure that you have a version of [OMDb BFF](http://github.com/Teoble/teoble-movies-be) cloned in your machine. Open the repo and start dev running:
 
 ```bash
 $ npm run start
