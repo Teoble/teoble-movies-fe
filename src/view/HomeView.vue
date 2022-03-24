@@ -1,13 +1,34 @@
 <template>
   <md-content>
     <div class="wrapper">
-      <SearchInput />
+      <SearchInput @search-term-selected="searchMovies" />
       <div class="search-title">
         <h2>{{ searchTitle }}</h2>
         <md-divider></md-divider>
       </div>
       <div class="search-wrapper">
-        <div class="md-layout md-gutter">
+        <div v-if="isLoading">
+          <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+        </div>
+        <div v-else-if="movies.length === 0 && !termSearched">
+          <md-empty-state
+            class="md-error"
+            md-icon="heart_broken"
+            md-label="Nothing to show"
+            md-description="It seems that you don't have favorite movies"
+          >
+          </md-empty-state>
+        </div>
+        <div v-else-if="movies.length === 0 && termSearched">
+          <md-empty-state
+            class="md-error"
+            md-icon="search_off"
+            md-label="Nothing to show"
+            md-description="We could not find movies for this search"
+          >
+          </md-empty-state>
+        </div>
+        <div class="md-layout md-gutter" v-else>
           <movie-card
             v-for="movie of movies"
             :key="movie.imdbID"
@@ -32,34 +53,31 @@ import MovieCard from '../components/MovieCard.vue'
   }
 })
 export default class HomeView extends Vue {
-  searchTitle = 'Your Wishlist'
+  termSearched = ''
+  movies: IMovieCard[] = []
+  isLoading = false
 
-  movies: IMovieCard[] = [
-    {
-      imdbID: 'tt1201607',
-      title: 'Harry Potter and the Deathly Hallows: Part 2',
-      year: 2011,
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg',
-      favorite: true
-    },
-    {
-      imdbID: 'tt0241527',
-      title: "Harry Potter and the Sorcerer's Stone",
-      year: 2001,
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BNjQ3NWNlNmQtMTE5ZS00MDdmLTlkZjUtZTBlM2UxMGFiMTU3XkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_SX300.jpg',
-      favorite: false
-    },
-    {
-      imdbID: 'tt0295297',
-      title: 'Harry Potter and the Chamber of Secrets',
-      year: 2002,
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMTcxODgwMDkxNV5BMl5BanBnXkFtZTYwMDk2MDg3._V1_SX300.jpg',
-      favorite: false
-    }
-  ]
+  get searchTitle() {
+    return !this.termSearched
+      ? 'Your Wishlist'
+      : `Search results for "${this.termSearched}"`
+  }
+
+  searchMovies(search: string) {
+    this.termSearched = search
+    this.isLoading = true
+    if (this.termSearched)
+      this.$http.get(`movies/search?movie=${this.termSearched}`).then(
+        (response) => {
+          this.movies = response.data
+          this.isLoading = false
+        },
+        (response) => {
+          this.movies = []
+          this.isLoading = false
+        }
+      )
+  }
 }
 </script>
 

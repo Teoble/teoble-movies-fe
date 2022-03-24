@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeView from './view/HomeView.vue';
+import HomeView from './view/HomeView.vue'
 </script>
 
 <template>
@@ -19,12 +19,11 @@ import HomeView from './view/HomeView.vue';
 </template>
 
 <style>
-
 #app {
   background-color: #343547;
 }
 
-.md-toolbar-row{ 
+.md-toolbar-row {
   align-self: center;
 }
 </style>

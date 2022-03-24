@@ -16,7 +16,8 @@
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "skipLibCheck": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports":true
   },
   "vueCompilerOptions": {
     "experimentalCompatMode": 2

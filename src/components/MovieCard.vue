@@ -4,8 +4,11 @@
     @mouseenter="showDetails = !showDetails"
     @mouseleave="showDetails = !showDetails"
   >
-    <div class="movie-poster">
-      <img :src="movie.poster" :alt="movie.title" />
+    <div class="movie-poster" @click="showModal = true">
+      <img :src="movie.poster" :alt="movie.title" v-if="movie.poster !== 'N/A'"/>
+      <div class="movie-placeholder" v-else>
+        <md-icon class="md-size-2x">movie</md-icon>
+      </div>
     </div>
     <transition name="fade">
       <div class="movie-details-wrapper" v-if="showDetails">
@@ -21,23 +24,43 @@
         </div>
       </div>
     </transition>
+    <movie-dialog :imdbID="movie.imdbID" :show="showModal" @modal-closed="showModal = $event" />
+  </div>
+</template>
   </div>
 </template>
 
 <script lang="ts">
 import IMovieCard from '@/model/MovieCard'
 import { Component, Prop, Vue } from 'vue-property-decorator'
+import MovieDialog from './MovieDialog.vue'
 
-@Component
+@Component({
+  components: {
+    MovieDialog
+  }
+})
 export default class MovieCard extends Vue {
   @Prop()
   movie!: IMovieCard
 
   showDetails: boolean = false
+  showModal: boolean = false
+
 }
 </script>
 
 <style lang="scss" scoped>
+.movie-placeholder {
+  background-color: #FFF;
+  width: 297px;
+  height: 400px;
+  display: flex;
+
+  .md-icon {
+    color: #343547;
+  }
+}
 .movie-box {
   margin-top: 20px;
   position: relative;
@@ -56,7 +79,8 @@ export default class MovieCard extends Vue {
   .fade-leave-active {
     transition: opacity 0.5s;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
   }
 
