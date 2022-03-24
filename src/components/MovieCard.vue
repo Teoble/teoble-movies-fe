@@ -52,7 +52,6 @@ export default class MovieCard extends Vue {
 
   @Emit()
   toggleWishlist() {
-    console.log("🚀 ~ file: MovieCard.vue ~ line 57 ~ MovieCard ~ toggleWishlist ~ this.movie.favorite", this.movie.favorite)
     this.movie.favorite = !this.movie.favorite;
 
     return this.movie.favorite ? this.wishlistService.addMovieToWishlist(this.movie) :this.wishlistService.removeFromWishlist(this.movie)
