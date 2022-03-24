@@ -24,7 +24,6 @@ export default class SearchInput extends Vue {
 
   @Emit()
   searchTermSelected() {
-    this.suggestedMovies = []
     return this.searchedMovie
   }
 
@@ -40,6 +39,10 @@ export default class SearchInput extends Vue {
           this.suggestedMovies = []
         }
       )
+    else if (searchTerm === '') {
+      this.searchedMovie = ''
+      this.searchTermSelected()
+    }
   }
 }
 </script>

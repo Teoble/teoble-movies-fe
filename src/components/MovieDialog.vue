@@ -6,7 +6,10 @@
     @md-opened="getMovie()"
   >
     <div>
-      <div class="error" v-if="hasError || !movie.title">
+      <div v-if="isLoading">
+        <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+      </div>
+      <div class="error" v-else-if="hasError || !movie.title">
         <md-empty-state
           class="md-error"
           md-icon="report"
@@ -15,16 +18,26 @@
         >
         </md-empty-state>
       </div>
-      <div v-else-if="isLoading">
-        <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-      </div>
       <div class="detail-wrapper" v-else>
         <div class="detail-poster">
-          <img :src="movie.poster" :alt="movie.title" />
+          <img
+            :src="movie.poster"
+            :alt="movie.title"
+            v-if="movie.poster !== 'N/A'"
+          />
+          <div class="movie-placeholder" v-else>
+            <md-icon class="md-size-2x">movie</md-icon>
+          </div>
         </div>
         <div class="detail-info">
           <div class="movie-title">
             <span class="md-headline">{{ movie.title }}</span>
+          </div>
+          <div>
+            <md-button class="md-accent" @click="toggleWishlist()">
+              <md-icon v-if="clickedMovie.favorite">favorite</md-icon>
+              <md-icon v-else>favorite_border</md-icon>
+            </md-button>
           </div>
           <div class="movie-props">
             <p><span class="md-body-2">Year: </span>{{ movie.year }}</p>
@@ -50,13 +63,14 @@
 </template>
 
 <script lang="ts">
+import IMovieCard from '@/model/MovieCard'
 import IMovieDetails from '@/model/MovieDetails'
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class MovieDialog extends Vue {
   @Prop()
-  imdbID!: number
+  clickedMovie!: IMovieCard
 
   @Prop()
   show: boolean = false
@@ -80,7 +94,7 @@ export default class MovieDialog extends Vue {
 
   getMovie() {
     this.isLoading = true
-    this.$http.get(`movies/${this.imdbID}`).then(
+    this.$http.get(`movies/${this.clickedMovie.imdbID}`).then(
       (response) => {
         this.movie = response.data
         this.isLoading = false
@@ -94,6 +108,11 @@ export default class MovieDialog extends Vue {
   }
 
   @Emit()
+  toggleWishlist() {
+    return this.clickedMovie
+  }
+
+  @Emit()
   modalClosed() {
     return false
   }
@@ -101,9 +120,20 @@ export default class MovieDialog extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.movie-placeholder {
+  background-color: #fff;
+  width: 297px;
+  height: 400px;
+  display: flex;
+
+  .md-icon {
+    color: #343547;
+  }
+}
 .detail-wrapper {
   display: flex;
-  padding: 2em;
+  flex-direction: row;
+  padding: 2em 2em 4em 2em;
 }
 
 .detail-info {

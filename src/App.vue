@@ -19,8 +19,8 @@ import HomeView from './view/HomeView.vue'
 </template>
 
 <style>
-#app {
-  background-color: #343547;
+body {
+  background-color: #424242;
 }
 
 .md-toolbar-row {

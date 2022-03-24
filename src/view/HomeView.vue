@@ -33,6 +33,7 @@
             v-for="movie of movies"
             :key="movie.imdbID"
             :movie="movie"
+            @toggle-wishlist="updateWishlist($event)"
           />
         </div>
       </div>
@@ -45,6 +46,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import SearchInput from '@/components/SearchInput.vue'
 import IMovieCard from '@/model/MovieCard'
 import MovieCard from '../components/MovieCard.vue'
+import WishlistService from '@/service/WishlistService'
 
 @Component({
   components: {
@@ -63,13 +65,31 @@ export default class HomeView extends Vue {
       : `Search results for "${this.termSearched}"`
   }
 
+  private wishlistService: WishlistService = new WishlistService()
+
+  mounted() {
+    this.movies = this.getWishlist()
+  }
+
+  updateWishlist(updatedWishlist: IMovieCard[]) {
+    if (!this.termSearched) this.movies = updatedWishlist
+  }
+
   searchMovies(search: string) {
     this.termSearched = search
-    this.isLoading = true
-    if (this.termSearched)
+    if (this.termSearched) {
+      this.isLoading = true
       this.$http.get(`movies/search?movie=${this.termSearched}`).then(
         (response) => {
-          this.movies = response.data
+          this.movies = response.data.map((movie: IMovieCard) => {
+            const movieInWishlist = this.getWishlist().find(
+              (wishedMovie) => movie.imdbID === wishedMovie.imdbID
+            )
+            return {
+              ...movie,
+              favorite: movieInWishlist && movieInWishlist.favorite
+            }
+          })
           this.isLoading = false
         },
         (response) => {
@@ -77,6 +97,13 @@ export default class HomeView extends Vue {
           this.isLoading = false
         }
       )
+    } else {
+      this.movies = this.getWishlist()
+    }
+  }
+
+  private getWishlist() {
+    return this.wishlistService.getWishlist()
   }
 }
 </script>

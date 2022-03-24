@@ -17,14 +17,14 @@
           <span class="md-subhead">{{ movie.year }}</span>
         </div>
         <div class="favorite-wrapper">
-          <md-button class="md-icon-button">
+          <md-button class="md-icon-button" @click="toggleWishlist()">
             <md-icon v-if="movie.favorite">favorite</md-icon>
             <md-icon v-else>favorite_border</md-icon>
           </md-button>
         </div>
       </div>
     </transition>
-    <movie-dialog :imdbID="movie.imdbID" :show="showModal" @modal-closed="showModal = $event" />
+    <movie-dialog :clickedMovie="movie" :show="showModal" @modal-closed="showModal = $event" @toggle-wishlist="toggleWishlist()" />
   </div>
 </template>
   </div>
@@ -32,7 +32,8 @@
 
 <script lang="ts">
 import IMovieCard from '@/model/MovieCard'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import WishlistService from '@/service/WishlistService'
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator'
 import MovieDialog from './MovieDialog.vue'
 
 @Component({
@@ -47,6 +48,15 @@ export default class MovieCard extends Vue {
   showDetails: boolean = false
   showModal: boolean = false
 
+  private wishlistService: WishlistService = new WishlistService()
+
+  @Emit()
+  toggleWishlist() {
+    console.log("🚀 ~ file: MovieCard.vue ~ line 57 ~ MovieCard ~ toggleWishlist ~ this.movie.favorite", this.movie.favorite)
+    this.movie.favorite = !this.movie.favorite;
+
+    return this.movie.favorite ? this.wishlistService.addMovieToWishlist(this.movie) :this.wishlistService.removeFromWishlist(this.movie)
+  }
 }
 </script>
 
