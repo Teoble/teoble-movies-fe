@@ -17,7 +17,7 @@
           <span class="md-subhead">{{ movie.year }}</span>
         </div>
         <div class="favorite-wrapper">
-          <md-button class="md-icon-button" @click="toggleWishlist()">
+          <md-button class="md-icon-button md-accent" @click="toggleWishlist()">
             <md-icon v-if="movie.favorite">favorite</md-icon>
             <md-icon v-else>favorite_border</md-icon>
           </md-button>

@@ -34,7 +34,10 @@
             <span class="md-headline">{{ movie.title }}</span>
           </div>
           <div>
-            <md-button class="md-accent" @click="toggleWishlist()">
+            <md-button
+              class="md-icon-button md-accent"
+              @click="toggleWishlist()"
+            >
               <md-icon v-if="clickedMovie.favorite">favorite</md-icon>
               <md-icon v-else>favorite_border</md-icon>
             </md-button>
