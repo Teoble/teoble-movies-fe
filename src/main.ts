@@ -11,7 +11,7 @@ Vue.use(VueMaterial)
 Vue.use(VueCompositionAPI)
 Vue.use(VueResource)
 
-Vue.http.options.root = 'http://localhost:4000'
+Vue.http.options.root = import.meta.env.VITE_BASE_URL
 
 const app = createApp({
   render: () => h(App)
